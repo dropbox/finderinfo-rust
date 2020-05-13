@@ -3,7 +3,7 @@
 A library to parse Apple HFS/HFS+/APFS FinderInfo attribute.
 
 On modern MacOS systems, objects in the filesystem can have an extended attribute called `com.apple.FinderInfo`. This
-attribute is 32 bytes long and largley undocumented. It turns out that this attribute is actually the old HFS Finder
+attribute is 32 bytes long and largely undocumented. It turns out that this attribute is actually the old HFS Finder
 Info struct in the first 16 bytes, and the Extended Finder Info struct in the second 16 bytes. This library provides a
 mechanism by which a Rust program can programmatically interact with these structures.
 
