@@ -58,6 +58,9 @@ pub mod constants {
     /// For a file, this bit indicates that the file is an alias file. For directories, this bit is
     /// reserved--in which case, set to 0.
     pub const kIsAlias: u16 = 0x8000;
+    /// Undocumented in Finder.h, but used by Finder to hide the extension of a file or folder.
+    /// Name is not official.
+    pub const kHideExtension: u16 = 0x0010;
 
     // Extended finder flag constants
     /// If set the other extended flags are ignored.
@@ -164,6 +167,18 @@ impl FinderFlags {
         }
     }
 
+    pub fn has_hidden_extension(&self) -> bool {
+        self.0 & constants::kHideExtension != 0
+    }
+
+    pub fn set_has_hidden_extension(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kHideExtension;
+        } else {
+            self.0 &= !constants::kHideExtension;
+        }
+    }
+
     pub fn is_stationery(&self) -> bool {
         self.0 & constants::kIsStationery != 0
     }
@@ -217,6 +232,9 @@ impl fmt::Debug for FinderFlags {
         }
         if self.is_alias() {
             flags.push("kIsAlias".to_string());
+        }
+        if self.has_hidden_extension() {
+            flags.push("kHideExtension".to_string());
         }
         f.debug_struct("FinderFlags")
             .field("raw", &self.0)
