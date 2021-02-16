@@ -1,0 +1,27 @@
+[package]
+name = "finder_info_bin"
+version = "0.2.0"
+authors = ["Dropbox Engineering <eng@dropbox.com>"]
+license = "Apache-2.0"
+description = "A utility to parse the Apple HFS/HFS+/APFS FinderInfo attribute."
+repository = "https://github.com/dropbox/finderinfo-rust"
+edition = "2018"
+
+[[bin]]
+name = "finderinfo"
+
+[features]
+default = []
+# this feature enables the ability to read and write the FinderInfo xattr on MacOS.
+xattr = ["libc"]
+
+[dependencies]
+finder_info = { path = "..", version = "0.2" }
+
+cfg-if = "0.1"
+docopt = "1.0"
+hex = "0.3"
+serde = "1.0"
+serde_derive = "1.0"
+
+libc = { version = "0.2", optional = true }
