@@ -1,18 +1,10 @@
-#[macro_use]
-extern crate cfg_if;
-extern crate docopt;
-extern crate finder_info;
-extern crate hex;
-#[cfg(all(feature = "xattr", target_os = "macos"))]
-extern crate libc;
-#[macro_use]
-extern crate serde_derive;
-
-use std::io;
 use std::fs;
+use std::io;
 
+use cfg_if::cfg_if;
 use docopt::Docopt;
 use hex::FromHex;
+use serde_derive::Deserialize;
 
 use finder_info::{FinderInfoFile, FinderInfoFolder, OSType};
 

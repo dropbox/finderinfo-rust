@@ -6,10 +6,8 @@
 //! appropriately. APFS isn't big-endian, but it pretends pretty hard internally (and does so
 //! here).
 
-extern crate byteorder;
-
-use std::io;
 use std::fmt;
+use std::io;
 
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 
@@ -17,7 +15,7 @@ use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 pub struct OSType(pub [u8; 4]);
 
 impl fmt::Debug for OSType {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let s = String::from_utf8(self.0.to_vec());
         write!(f, "{:?}", s)
     }
@@ -201,7 +199,7 @@ impl FinderFlags {
 }
 
 impl fmt::Debug for FinderFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut flags = vec![];
         if let Some(color) = self.color() {
             flags.push(format!("{:?}", color));
@@ -327,7 +325,7 @@ impl LabelColor {
 pub struct ExtendedFinderFlags(u16);
 
 impl fmt::Debug for ExtendedFinderFlags {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let mut flags = vec![];
         if self.are_invalid() {
             flags.push("kExtendedFlagsAreInvalid");
@@ -434,7 +432,7 @@ pub struct ExtendedFileInfo {
 }
 
 impl fmt::Debug for ExtendedFileInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if self.reserved1 == [0i16; 4] && self.reserved2 == 0 {
             f.debug_struct("ExtendedFileInfo")
                 .field("extendedFinderFlags", &self.extendedFinderFlags)
@@ -518,7 +516,7 @@ pub struct FolderInfo {
 }
 
 impl fmt::Debug for FolderInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if self.reservedField == 0 {
             f.debug_struct("FolderInfo")
                 .field("windowBounds", &self.windowBounds)
@@ -580,7 +578,7 @@ pub struct ExtendedFolderInfo {
 }
 
 impl fmt::Debug for ExtendedFolderInfo {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         if self.reserved1 == 0 && self.reserved2 == 0 {
             f.debug_struct("ExtendedFolderInfo")
                 .field("scrollPosition", &self.scrollPosition)

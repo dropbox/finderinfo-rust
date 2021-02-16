@@ -5,6 +5,7 @@ authors = ["Dropbox Engineering <eng@dropbox.com>"]
 license = "Apache-2.0"
 description = "A library to parse Apple HFS/HFS+/APFS FinderInfo attribute."
 repository = "https://github.com/dropbox/finderinfo-rust"
+edition = "2018"
 
 [features]
 default = []
