@@ -18,7 +18,7 @@ pub struct OSType(pub [u8; 4]);
 
 impl fmt::Debug for OSType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let s = String::from_utf8(self.0.into_iter().cloned().collect());
+        let s = String::from_utf8(self.0.to_vec());
         write!(f, "{:?}", s)
     }
 }
