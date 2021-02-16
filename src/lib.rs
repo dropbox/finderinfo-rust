@@ -7,7 +7,7 @@
 //! here).
 
 use std::fmt;
-use std::io;
+use std::io::{self, Read, Write};
 
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 
@@ -106,7 +106,7 @@ pub struct Rect {
 }
 
 impl Rect {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<Rect> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<Rect> {
         let top = r.read_i16::<BigEndian>()?;
         let left = r.read_i16::<BigEndian>()?;
         let bottom = r.read_i16::<BigEndian>()?;
@@ -119,7 +119,7 @@ impl Rect {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         w.write_i16::<BigEndian>(self.top)?;
         w.write_i16::<BigEndian>(self.left)?;
         w.write_i16::<BigEndian>(self.bottom)?;
@@ -387,7 +387,7 @@ pub struct FileInfo {
 }
 
 impl FileInfo {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<FileInfo> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<FileInfo> {
         let mut fileType = [0u8; 4];
         r.read(&mut fileType)?;
         let mut fileCreator = [0u8; 4];
@@ -404,7 +404,7 @@ impl FileInfo {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         w.write(&self.fileType.0)?;
         w.write(&self.fileCreator.0)?;
         w.write_u16::<BigEndian>(self.finderFlags.into())?;
@@ -450,7 +450,7 @@ impl fmt::Debug for ExtendedFileInfo {
 }
 
 impl ExtendedFileInfo {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<ExtendedFileInfo> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<ExtendedFileInfo> {
         let mut reserved1 = [0i16; 4];
         r.read_i16_into::<BigEndian>(&mut reserved1)?;
         let extendedFinderFlags = r.read_u16::<BigEndian>()?.into();
@@ -464,7 +464,7 @@ impl ExtendedFileInfo {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         for r in &self.reserved1 {
             w.write_i16::<BigEndian>(*r)?;
         }
@@ -483,7 +483,7 @@ pub struct FinderInfoFile {
 }
 
 impl FinderInfoFile {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<FinderInfoFile> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<FinderInfoFile> {
         let file_info = FileInfo::read(r)?;
         let extended_file_info = ExtendedFileInfo::read(r)?;
         Ok(FinderInfoFile {
@@ -492,7 +492,7 @@ impl FinderInfoFile {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         self.file_info.write(w)?;
         self.extended_file_info.write(w)?;
         Ok(())
@@ -535,7 +535,7 @@ impl fmt::Debug for FolderInfo {
 }
 
 impl FolderInfo {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<FolderInfo> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<FolderInfo> {
         let windowBounds = Rect::read(r)?;
         let finderFlags = r.read_u16::<BigEndian>()?.into();
         let location = Point::read(r)?;
@@ -548,7 +548,7 @@ impl FolderInfo {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         self.windowBounds.write(w)?;
         w.write_u16::<BigEndian>(self.finderFlags.into())?;
         self.location.write(w)?;
@@ -598,7 +598,7 @@ impl fmt::Debug for ExtendedFolderInfo {
 }
 
 impl ExtendedFolderInfo {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<ExtendedFolderInfo> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<ExtendedFolderInfo> {
         let scrollPosition = Point::read(r)?;
         let reserved1 = r.read_i32::<BigEndian>()?;
         let extendedFinderFlags = r.read_u16::<BigEndian>()?.into();
@@ -613,7 +613,7 @@ impl ExtendedFolderInfo {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         self.scrollPosition.write(w)?;
         w.write_i32::<BigEndian>(self.reserved1)?;
         w.write_u16::<BigEndian>(self.extendedFinderFlags.into())?;
@@ -631,7 +631,7 @@ pub struct FinderInfoFolder {
 }
 
 impl FinderInfoFolder {
-    pub fn read<R: ReadBytesExt>(r: &mut R) -> io::Result<FinderInfoFolder> {
+    pub fn read<R: Read>(r: &mut R) -> io::Result<FinderInfoFolder> {
         let folder_info = FolderInfo::read(r)?;
         let extended_folder_info = ExtendedFolderInfo::read(r)?;
         Ok(FinderInfoFolder {
@@ -640,7 +640,7 @@ impl FinderInfoFolder {
         })
     }
 
-    pub fn write<W: WriteBytesExt>(&self, w: &mut W) -> io::Result<()> {
+    pub fn write<W: Write>(&self, w: &mut W) -> io::Result<()> {
         self.folder_info.write(w)?;
         self.extended_folder_info.write(w)?;
         Ok(())
