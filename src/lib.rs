@@ -213,7 +213,6 @@ impl FinderFlags {
         }
     }
 
-
     pub fn name_locked(&self) -> bool {
         self.0 & constants::kNameLocked != 0
     }
