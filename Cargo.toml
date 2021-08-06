@@ -1,6 +1,6 @@
 [package]
 name = "finder_info"
-version = "0.2.2"
+version = "0.2.3"
 authors = ["Dropbox Engineering <eng@dropbox.com>"]
 license = "Apache-2.0"
 description = "A library to parse Apple HFS/HFS+/APFS FinderInfo attribute."

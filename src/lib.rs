@@ -145,12 +145,36 @@ impl FinderFlags {
         self.0 & constants::kIsShared != 0
     }
 
+    pub fn set_is_shared(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kIsShared;
+        } else {
+            self.0 &= !constants::kIsShared;
+        }
+    }
+
     pub fn has_no_inits(&self) -> bool {
         self.0 & constants::kHasNoINITs != 0
     }
 
+    pub fn set_has_no_inits(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kHasNoINITs;
+        } else {
+            self.0 &= !constants::kHasNoINITs;
+        }
+    }
+
     pub fn has_been_inited(&self) -> bool {
         self.0 & constants::kHasBeenInited != 0
+    }
+
+    pub fn set_has_been_inited(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kHasBeenInited;
+        } else {
+            self.0 &= !constants::kHasBeenInited;
+        }
     }
 
     pub fn has_custom_icon(&self) -> bool {
@@ -181,20 +205,60 @@ impl FinderFlags {
         self.0 & constants::kIsStationery != 0
     }
 
+    pub fn set_is_stationery(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kIsStationery;
+        } else {
+            self.0 &= !constants::kIsStationery;
+        }
+    }
+
     pub fn name_locked(&self) -> bool {
         self.0 & constants::kNameLocked != 0
+    }
+
+    pub fn set_name_locked(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kNameLocked;
+        } else {
+            self.0 &= !constants::kNameLocked;
+        }
     }
 
     pub fn has_bundle(&self) -> bool {
         self.0 & constants::kHasBundle != 0
     }
 
+    pub fn set_has_bundle(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kHasBundle;
+        } else {
+            self.0 &= !constants::kHasBundle;
+        }
+    }
+
     pub fn is_invisible(&self) -> bool {
         self.0 & constants::kIsInvisible != 0
     }
 
+    pub fn set_is_invisible(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kIsInvisible;
+        } else {
+            self.0 &= !constants::kIsInvisible;
+        }
+    }
+
     pub fn is_alias(&self) -> bool {
         self.0 & constants::kIsAlias != 0
+    }
+
+    pub fn set_is_alias(&mut self, value: bool) {
+        if value {
+            self.0 |= constants::kIsAlias;
+        } else {
+            self.0 &= !constants::kIsAlias;
+        }
     }
 }
 
