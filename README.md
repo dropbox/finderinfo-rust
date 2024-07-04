@@ -1,5 +1,7 @@
 # finderinfo
 
+![docs.rs](https://img.shields.io/docsrs/finder_info) ![Crates.io Version](https://img.shields.io/crates/v/finder_info)
+
 A library to parse Apple HFS/HFS+/APFS FinderInfo attribute.
 
 On modern MacOS systems, objects in the filesystem can have an extended attribute called `com.apple.FinderInfo`. This
